@@ -1,0 +1,34 @@
+﻿<Window x:Class="Practice.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Practice"
+        mc:Ignorable="d" xmlns:system="clr-namespace:System;assembly=mscorlib"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <local:DoubleToString x:Key="doubleToString" />
+        <ObjectDataProvider x:Key="convertDistance" ObjectType="{x:Type local:DistanceConverter }" MethodName="Convert" >
+            <ObjectDataProvider.MethodParameters>
+                <system:Double>0</system:Double>
+                <local:DistanceType>Miles</local:DistanceType>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <StackPanel HorizontalAlignment="Center" Margin="10">
+        <TextBlock Text="Proporcione la distancia a convertir:"/>
+        <TextBox Text ="{Binding Source={StaticResource convertDistance},
+                        Path=MethodParameters[0],BindsDirectlyToSource=true,
+                        UpdateSourceTrigger=PropertyChanged,
+                        Converter={StaticResource doubleToString}}"/>
+        <ComboBox Width="80" HorizontalAlignment="Left" 
+                  SelectedValue="{Binding Source={StaticResource convertDistance},Path=MethodParameters[1], 
+                                BindsDirectlyToSource=true}" >
+            <local:DistanceType>Miles</local:DistanceType>
+            <local:DistanceType>Kilometres</local:DistanceType>
+        </ComboBox>
+
+        <TextBlock Text="Resultado:" Margin="0,20,0,0"/>
+        <TextBlock Text="{Binding Source={StaticResource convertDistance}}"/>
+    </StackPanel>
+</Window>
